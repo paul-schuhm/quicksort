@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * Une implémentation de l'algorithme de tri 'quicksort'.
+ */
+
+/**
+ * Retourne une collection ordonnée (asc)
+ *
+ * @param array $items La collection à trier
+ *
+ * @return array
+ */
+function quicksort(array $items): array
+{
+
+    if (empty($items)) {
+        return $items;
+    }
+
+    $pivot = array_shift($items);
+
+    $greater = array_filter($items, fn($item) => $item > $pivot);
+    $smaller = array_filter($items, fn($item) => $item <= $pivot);
+
+    return array_merge(quicksort($smaller), [$pivot], quicksort($greater));
+}
+
+//Quick test
+
+echo "php quicksort [number_of_items]" . PHP_EOL;
+
+$number_of_items = 10000;
+
+if (isset($argv[1])) {
+    $number_of_items = intval($argv[1]);
+}
+
+$random_numbers = range(0, $number_of_items);
+
+shuffle($random_numbers);
+
+echo implode(', ', quicksort($random_numbers)) . PHP_EOL;
